@@ -1,4 +1,4 @@
-// Protótipo completo: App do Cliente + Painel Administrativo do Fotógrafo (com upload e certificado)
+// Novo App.js 100% funcional – Upload + Certificado + Supabase (pasta 'uploads')
 
 import React, { useState, useEffect, useRef } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
@@ -7,6 +7,7 @@ import * as exifr from "exifr";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 
+// ⬇️ SUBSTITUA pelos dados reais do seu projeto Supabase
 const supabase = createClient(
   "https://xswytgkswrtteflowxap.supabase.co",
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhzd3l0Z2tzd3J0dGVmbG93eGFwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc5OTg3NTEsImV4cCI6MjA2MzU3NDc1MX0.12NbfT5UPCvcOOtYXhRRmjoGkbqkO9Qb4RbGoVZxCrY"
@@ -116,7 +117,7 @@ function UploadImagem() {
 
           const { error: uploadError } = await supabase.storage
             .from("imagens")
-            .upload(`${codigo}.jpg`, file);
+            .upload(`uploads/${codigo}.jpg`, file);
 
           if (uploadError) {
             console.error("Erro no upload:", uploadError);
@@ -124,7 +125,7 @@ function UploadImagem() {
             return null;
           }
 
-          const { publicURL } = supabase.storage.from("imagens").getPublicUrl(`${codigo}.jpg`);
+          const { publicURL } = supabase.storage.from("imagens").getPublicUrl(`uploads/${codigo}.jpg`);
 
           const { error: insertError } = await supabase.from("imagens").insert({
             nome: nomeBase,
@@ -138,7 +139,7 @@ function UploadImagem() {
 
           if (insertError) {
             console.error("Erro ao inserir na tabela:", insertError);
-            setMensagem("Upload salvo no storage, mas falhou ao gravar na tabela.");
+            setMensagem("Upload feito, mas falhou ao gravar na tabela.");
             return null;
           }
 
@@ -150,7 +151,7 @@ function UploadImagem() {
             url: publicURL
           };
         } catch (e) {
-          console.error("Erro geral:", e);
+          console.error("Erro inesperado:", e);
           setMensagem("Erro inesperado durante o upload.");
           return null;
         }
