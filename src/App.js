@@ -8,8 +8,8 @@ import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 
 const supabase = createClient(
-  "https://lioxmdorkwyeazmcezua.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxpb3htZG9ya3d5ZWF6bWNlenVhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc5MDIyMzgsImV4cCI6MjA2MzQ3ODIzOH0.ooWYGhZnIDu_Sgp12U458RS6kq5bp-pfR8fHboiLpzc"
+  "https://xswytgkswrtteflowxap.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhzd3l0Z2tzd3J0dGVmbG93eGFwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc5OTg3NTEsImV4cCI6MjA2MzU3NDc1MX0.12NbfT5UPCvcOOtYXhRRmjoGkbqkO9Qb4RbGoVZxCrY"
 );
 
 function Certificado({ imagem, titulo, dataOriginal, onClose }) {
