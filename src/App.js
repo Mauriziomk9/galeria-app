@@ -1,3 +1,5 @@
+// Protótipo completo: App do Cliente + Painel Administrativo do Fotógrafo (com upload e certificado)
+
 import React, { useState, useEffect, useRef } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { createClient } from "@supabase/supabase-js";
@@ -98,43 +100,60 @@ function ListaImagens() {
 function UploadImagem() {
   const [imagens, setImagens] = useState([]);
   const [serie, setSerie] = useState("Série Teste");
+  const [mensagem, setMensagem] = useState("");
 
   const handleUpload = async (event) => {
+    setMensagem("");
     const files = Array.from(event.target.files);
 
     const processadas = await Promise.all(
       files.map(async (file, index) => {
-        const exif = await exifr.parse(file).catch(() => ({}));
-        const nomeBase = file.name.split(".")[0].toUpperCase();
-        const timestamp = Date.now();
-        const codigo = `IMG-${timestamp}-${index}`;
+        try {
+          const exif = await exifr.parse(file).catch(() => ({}));
+          const nomeBase = file.name.split(".")[0].toUpperCase();
+          const timestamp = Date.now();
+          const codigo = `IMG-${timestamp}-${index}`;
 
-        const { data: uploadData, error: uploadError } = await supabase.storage
-          .from("imagens")
-          .upload(`${codigo}.jpg`, file);
+          const { error: uploadError } = await supabase.storage
+            .from("imagens")
+            .upload(`${codigo}.jpg`, file);
 
-        if (uploadError) {
-          console.error("Erro no upload:", uploadError);
+          if (uploadError) {
+            console.error("Erro no upload:", uploadError);
+            setMensagem("Erro ao enviar imagem para o storage.");
+            return null;
+          }
+
+          const { publicURL } = supabase.storage.from("imagens").getPublicUrl(`${codigo}.jpg`);
+
+          const { error: insertError } = await supabase.from("imagens").insert({
+            nome: nomeBase,
+            codigo,
+            url: publicURL,
+            data_original: exif?.DateTimeOriginal || "Desconhecida",
+            camera: exif?.Model || "Desconhecida",
+            lente: exif?.LensModel || "Desconhecida",
+            serie: serie
+          });
+
+          if (insertError) {
+            console.error("Erro ao inserir na tabela:", insertError);
+            setMensagem("Upload salvo no storage, mas falhou ao gravar na tabela.");
+            return null;
+          }
+
+          setMensagem("Imagem enviada e salva com sucesso.");
+
+          return {
+            nome: nomeBase,
+            codigo,
+            url: publicURL
+          };
+        } catch (e) {
+          console.error("Erro geral:", e);
+          setMensagem("Erro inesperado durante o upload.");
           return null;
         }
-
-        const { publicURL } = supabase.storage.from("imagens").getPublicUrl(`${codigo}.jpg`);
-
-        await supabase.from("imagens").insert({
-          nome: nomeBase,
-          codigo,
-          url: publicURL,
-          data_original: exif?.DateTimeOriginal || "Desconhecida",
-          camera: exif?.Model || "Desconhecida",
-          lente: exif?.LensModel || "Desconhecida",
-          serie: serie
-        });
-
-        return {
-          nome: nomeBase,
-          codigo,
-          url: publicURL
-        };
       })
     );
 
@@ -156,6 +175,8 @@ function UploadImagem() {
       </div>
 
       <input type="file" multiple onChange={handleUpload} className="mb-4" />
+
+      {mensagem && <p className="mb-4 text-sm text-blue-600">{mensagem}</p>}
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {imagens.map((img) => (
