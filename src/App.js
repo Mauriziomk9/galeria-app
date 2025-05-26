@@ -6,7 +6,7 @@ import html2canvas from "html2canvas";
 
 const supabase = createClient(
   "https://xswytgkswrtteflowxap.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhzd3l0Z2tzd3J0dGVmbG93eGFwIiwicm9sZSI6InB1YmxpYyIsImlhdCI6MTY5NTE0NzYyMSwiZXhwIjoxMzkxNTE0NzYyMX0.UgJ6wYaVBoL6K50IavugmrPyq5dMrJ6Tjtw3gFAqIjA"
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhzd3l0Z2tzd3J0dGVmbG93eGFwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc5OTg3NTEsImV4cCI6MjA2MzU3NDc1MX0.12NbfT5UPCvcOOtYXhRRmjoGkbqkO9Qb4RbGoVZxCrY"
 );
 
 function UploadImagem() {
