@@ -1,0 +1,46 @@
+.tela-boas-vindas {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(to bottom, #fdfdfd, #eaeaea);
+  font-family: 'Segoe UI', sans-serif;
+  text-align: center;
+  padding: 20px;
+}
+
+.logo-galeria {
+  width: 120px;
+  height: 120px;
+  margin-bottom: 20px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.tela-boas-vindas h1 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  color: #222;
+}
+
+.tela-boas-vindas p {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 30px;
+}
+
+.botao-entrar {
+  background-color: #000;
+  color: #fff;
+  border: none;
+  padding: 12px 28px;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.botao-entrar:hover {
+  background-color: #333;
+}
